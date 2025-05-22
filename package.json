@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "export": "next build",
-    "deploy": "touch out/.nojekyll && gh-pages -d out -t true"
+    "deploy": "npm run build && touch out/.nojekyll && npx gh-pages -d out"
   },
   "dependencies": {
     "@giscus/react": "^3.0.3",
@@ -16,7 +16,7 @@
     "@heroui/react": "^2.7.0",
     "@mdx-js/loader": "^3.0.0",
     "@next/mdx": "^14.1.0",
-    "framer-motion": "^12.12.1",
+    "framer-motion": "^12.0.0",
     "next": "15.3.2",
     "plausible-tracker": "^0.3.8",
     "react": "^19.0.0",
