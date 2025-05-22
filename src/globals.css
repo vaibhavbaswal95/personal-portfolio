@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animated Galaxy Background */
+@keyframes galaxyMove {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.galaxy-bg {
+  background: linear-gradient(
+    120deg,
+    #0f2027,
+    #2c5364,
+    #1a2980,
+    #6a3093,
+    #a044ff,
+    #00c6ff,
+    #ff5e62,
+    #00f2fe
+  );
+  background-size: 200% 200%;
+  animation: galaxyMove 16s ease-in-out infinite;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Optional: Starfield overlay */
+.galaxy-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('/images/starfield.png'); /* Add a starfield PNG/SVG to public/images */
+  opacity: 0.18;
+  z-index: 0;
+}
+
+/* Glassmorphism Utility */
+.glass {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 1rem;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.12);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.3);
+  position: relative;
+  z-index: 1;
+} 

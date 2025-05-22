@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  // GitHub Pages needs this when the site isn't at the root URL
+  basePath: process.env.NODE_ENV === 'production' ? '/personal-portfolio' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/personal-portfolio/' : '',
+  trailingSlash: true,
 };
 
 export default nextConfig;
