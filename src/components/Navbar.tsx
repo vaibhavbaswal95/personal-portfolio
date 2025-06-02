@@ -15,37 +15,48 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const [prevPathname, setPrevPathname] = useState("");
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Initial mounting effect
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Handle path changes only after mounting
-  useEffect(() => {
-    if (!mounted) return;
-    
-    // Only run transition effect if component is mounted and there was a previous path
-    if (prevPathname && prevPathname !== pathname) {
-      setIsTransitioning(true);
-      const timer = setTimeout(() => {
-        setIsTransitioning(false);
-      }, 600); // Match this with the animation duration
-      
-      return () => clearTimeout(timer);
-    }
-    
-    // Update the previous pathname
-    setPrevPathname(pathname);
-  }, [pathname, mounted, prevPathname]);
 
   function handleLinkClick() {
     setMenuOpen(false);
   }
 
-  // Render a placeholder during SSR
+  const renderNavLinks = (isMobile = false) => {
+    return navLinks.map((link) => {
+      // For home page
+      const isHome = link.href === "/" && pathname === "/";
+      // For other pages, remove trailing slashes for comparison
+      const currentPath = pathname?.replace(/\/$/, "");
+      const linkPath = link.href.replace(/\/$/, "");
+      const isCurrentPage = currentPath === linkPath;
+      
+      const isActive = isHome || isCurrentPage;
+      
+      return (
+        <Link
+          key={link.name}
+          href={link.href}
+          onClick={isMobile ? handleLinkClick : undefined}
+          className={`font-semibold text-lg px-5 py-2 rounded-full relative ${
+            isActive 
+              ? "text-black bg-white shadow-lg transform -translate-y-0.5" 
+              : "text-white/80 hover:text-white hover:bg-white/10 transition-all duration-300 ease-in-out"
+          }`}
+        >
+          {isActive && (
+            <span 
+              className="absolute inset-0 rounded-full bg-white -z-10"
+            ></span>
+          )}
+          <span className="relative z-10">{link.name}</span>
+        </Link>
+      );
+    });
+  };
+
   if (!mounted) {
     return (
       <nav className="sticky top-0 z-50 w-full flex items-center justify-center py-5 px-6">
@@ -80,38 +91,8 @@ export default function Navbar() {
           vb.
         </div>
         <div className="hidden md:flex gap-8 items-center">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            const wasActive = prevPathname === link.href && isTransitioning;
-            
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`font-semibold text-lg px-5 py-2 rounded-full relative ${
-                  isActive 
-                    ? "text-galaxy-500 bg-white/90 border border-white/50 shadow-lg transform -translate-y-0.5 drop-shadow-white-glow z-10 bg-gradient-to-r from-white via-white/95 to-white animate-button-active" 
-                    : wasActive
-                      ? "text-white/80 animate-nav-out"
-                      : isTransitioning && pathname === link.href
-                        ? "text-galaxy-500 animate-nav-in"
-                        : "text-white/80 hover:text-white hover:bg-galaxy-500/10 transition-all duration-300 ease-in-out"
-                }`}
-              >
-                {link.name}
-                {isActive && (
-                  <span 
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-white via-white/95 to-white opacity-0"
-                    style={{
-                      animation: isTransitioning ? 'none' : 'flowAnimation 8s ease-in-out infinite'
-                    }}
-                  ></span>
-                )}
-              </Link>
-            );
-          })}
+          {renderNavLinks()}
         </div>
-        {/* Mobile Hamburger */}
         <div className="md:hidden flex items-center">
           <button
             className="text-white text-2xl px-2 py-1 rounded hover:bg-galaxy-500/20 transition-all duration-300"
@@ -122,7 +103,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      {/* Mobile Menu Drawer */}
       {menuOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 flex justify-end md:hidden" onClick={() => setMenuOpen(false)}>
           <div
@@ -136,29 +116,7 @@ export default function Navbar() {
             >
               ×
             </button>
-            {navLinks.map((link, index) => {
-              const isActive = pathname === link.href;
-              
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`font-semibold text-xl px-5 py-2 rounded-full relative ${
-                    isActive 
-                      ? "text-galaxy-500 bg-white/90 border border-white/50 shadow-lg drop-shadow-white-glow bg-gradient-to-r from-white via-white/95 to-white animate-flow" 
-                      : "text-white/80 hover:text-white hover:bg-galaxy-500/10 transition-all duration-300 ease-in-out"
-                  }`}
-                  onClick={handleLinkClick}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    animation: menuOpen ? 'navItemSlideIn 0.5s ease-out forwards' : 'none',
-                    opacity: 0
-                  }}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
+            {renderNavLinks(true)}
           </div>
         </div>
       )}

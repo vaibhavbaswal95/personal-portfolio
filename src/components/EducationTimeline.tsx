@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 
 const education = [
-  { year: "2024 - now", title: "Data Science & AI", org: "Cars24", icon: "🧑‍💻" },
+  { year: "2024 - now", title: "Sr. Data Scientist", org: "Cars24", icon: "🧑‍💻" },
   { year: "2022-2023", title: "Lead Machine Learning Engineer", org: "Fashinza", icon: "🧑‍💻" },
-  { year: "2021-2022", title: "Machine Learning Engineer", org: "Cars24", icon: "🧑‍💻" },
+  { year: "2021-2022", title: "Machine Learning Engineer - II", org: "Cars24", icon: "🧑‍💻" },
   { year: "2020-2021", title: "Founding ML Engineer", org: "Computer Vision Research", icon: "🧑‍💻" },
   { year: "2018-2020", title: "Data Science Consultant", org: "EXL", icon: "🏢" },
   { year: "2017-2018", title: "Data Science Consultant", org: "Capgemini", icon: "🏢" },

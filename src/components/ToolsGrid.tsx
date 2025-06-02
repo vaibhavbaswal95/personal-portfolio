@@ -8,12 +8,12 @@ const tools = [
   { name: "Apache Spark", icon: "https://cdn.simpleicons.org/apacheSpark/E25A1C" },
   { name: "React", icon: "https://cdn.simpleicons.org/react/61DAFB" },
   { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs/white" },
-  { name: "Ableton Live", icon: "/images/tools/ableton.svg" },
-  { name: "Rekordbox", icon: "/images/tools/rekordbox.svg" },
-  { name: "Traktor", icon: "/images/tools/traktor.svg" },
-  { name: "Touchdesigner", icon: "/images/tools/touchdesigner.svg" },
-  { name: "Premiere Pro", icon: "/images/tools/pp.png" },
-  { name: "After Effects", icon: "/images/tools/ae.png" },
+  { name: "Ableton Live", icon: process.env.NODE_ENV === 'production' ? '/personal-portfolio/images/tools/ableton.svg' : '/images/tools/ableton.svg' },
+  { name: "Rekordbox", icon: process.env.NODE_ENV === 'production' ? '/personal-portfolio/images/tools/rekordbox.svg' : '/images/tools/rekordbox.svg' },
+  { name: "Traktor", icon: process.env.NODE_ENV === 'production' ? '/personal-portfolio/images/tools/traktor.svg' : '/images/tools/traktor.svg' },
+  { name: "Touchdesigner", icon: process.env.NODE_ENV === 'production' ? '/personal-portfolio/images/tools/touchdesigner.svg' : '/images/tools/touchdesigner.svg' },
+  { name: "Premiere Pro", icon: process.env.NODE_ENV === 'production' ? '/personal-portfolio/images/tools/pp.png' : '/images/tools/pp.png' },
+  { name: "After Effects", icon: process.env.NODE_ENV === 'production' ? '/personal-portfolio/images/tools/ae.png' : '/images/tools/ae.png' },
 ];
 
 export default function ToolsGrid() {
