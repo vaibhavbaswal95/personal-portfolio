@@ -1,6 +1,8 @@
 import { post as cvToLlms } from "./computer-vision-to-llms-transition";
+import { post as loraFineTuning } from "./finetuning-llama-lora-what-actually-works";
 
 export const allPosts = [
+  loraFineTuning,
   cvToLlms,
 ];
 

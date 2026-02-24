@@ -4,6 +4,7 @@ import Link from "next/link";
 // Slugs that have full written content
 const publishedSlugs = new Set([
   "computer-vision-to-llms-transition",
+  "finetuning-llama-lora-what-actually-works",
 ]);
 
 interface BlogCardProps {
