@@ -1,18 +1,18 @@
-import { getPostBySlug } from "../../../content/blogs";
+import { getPostBySlug, allPosts } from "../../../content/blogs";
 import { notFound } from "next/navigation";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  // Convert markdown-ish content to paragraphs/headings
   const renderContent = (content: string) => {
     const lines = content.split("\n");
     const elements: React.ReactNode[] = [];
@@ -35,14 +35,8 @@ export default function BlogPostPage({ params }: Props) {
         );
       } else if (line === "---") {
         elements.push(<hr key={i} className="border-white/10 my-8" />);
-      } else if (line.startsWith("**") && line.endsWith("**") && line.length > 4) {
-        elements.push(
-          <p key={i} className="font-bold text-white mt-4">
-            {line.replace(/\*\*/g, "")}
-          </p>
-        );
       } else if (line.trim() === "") {
-        // skip blank lines between paragraphs
+        // skip blank lines
       } else if (line.startsWith("*") && line.endsWith("*") && !line.startsWith("**")) {
         elements.push(
           <p key={i} className="text-white/50 italic mt-8 text-sm">
@@ -50,7 +44,6 @@ export default function BlogPostPage({ params }: Props) {
           </p>
         );
       } else {
-        // Regular paragraph — handle inline bold
         const parts = line.split(/(\*\*[^*]+\*\*)/g);
         elements.push(
           <p key={i} className="text-white/80 leading-relaxed mt-4">
@@ -74,14 +67,10 @@ export default function BlogPostPage({ params }: Props) {
   return (
     <main className="flex flex-col items-center w-full py-16 px-4 text-white">
       <article className="w-full max-w-2xl">
-        {/* Header */}
         <div className="mb-10">
           <div className="flex flex-wrap gap-2 mb-4">
             {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs bg-[rgb(165,100,180)]/20 text-[rgb(165,100,180)] px-3 py-1 rounded-full font-semibold"
-              >
+              <span key={tag} className="text-xs bg-[rgb(165,100,180)]/20 text-[rgb(165,100,180)] px-3 py-1 rounded-full font-semibold">
                 #{tag}
               </span>
             ))}
@@ -92,22 +81,14 @@ export default function BlogPostPage({ params }: Props) {
           <p className="text-white/40 text-sm">{post.date}</p>
         </div>
 
-        {/* Excerpt / lead */}
         <p className="text-lg text-white/60 italic border-l-2 border-[rgb(165,100,180)] pl-4 mb-10 leading-relaxed">
           {post.excerpt}
         </p>
 
-        {/* Body */}
-        <div className="prose-custom">
-          {renderContent(post.content)}
-        </div>
+        <div>{renderContent(post.content)}</div>
 
-        {/* Footer */}
         <div className="mt-16 pt-8 border-t border-white/10">
-          <a
-            href="/blogs"
-            className="text-[rgb(165,100,180)] hover:underline font-semibold"
-          >
+          <a href="/personal-portfolio/blogs" className="text-[rgb(165,100,180)] hover:underline font-semibold">
             ← Back to all posts
           </a>
         </div>
@@ -117,6 +98,5 @@ export default function BlogPostPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  const { allPosts } = await import("../../../content/blogs");
   return allPosts.map((post) => ({ slug: post.slug }));
 }
