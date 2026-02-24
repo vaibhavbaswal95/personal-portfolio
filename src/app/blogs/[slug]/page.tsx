@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getPostBySlug, allPosts } from "../../../content/blogs";
 import { notFound } from "next/navigation";
 
@@ -88,9 +89,9 @@ export default async function BlogPostPage({ params }: Props) {
         <div>{renderContent(post.content)}</div>
 
         <div className="mt-16 pt-8 border-t border-white/10">
-          <a href="/personal-portfolio/blogs" className="text-[rgb(165,100,180)] hover:underline font-semibold">
+          <Link href="/blogs" className="text-[rgb(165,100,180)] hover:underline font-semibold">
             ← Back to all posts
-          </a>
+          </Link>
         </div>
       </article>
     </main>

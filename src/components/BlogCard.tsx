@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 interface BlogCardProps {
   title: string;
@@ -19,7 +20,9 @@ export default function BlogCard({ title, date, tags, excerpt, slug }: BlogCardP
         ))}
       </div>
       <p className="text-white/80 font-medium mb-2">{excerpt}</p>
-      <a href={`/blogs/${slug}`} className="text-galaxy-400 hover:underline font-semibold mt-auto">Read More →</a>
+      <Link href={`/blogs/${slug}`} className="text-galaxy-400 hover:underline font-semibold mt-auto">
+        Read More →
+      </Link>
     </div>
   );
-} 
+}
